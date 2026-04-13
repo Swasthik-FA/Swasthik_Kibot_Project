@@ -1,0 +1,22 @@
+** Drc report for Swasthik_KiBot_Project.kicad_pcb **
+** Created on 2026-04-13T06:53:44+0000 **
+
+** Found 4 DRC violations **
+[lib_footprint_mismatch]: Footprint 'TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal' does not match copy in library 'TerminalBlock_Phoenix'.
+    ; warning
+    @(221.14 mm, 76.06 mm): Footprint J2
+[lib_footprint_mismatch]: Footprint 'TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal' does not match copy in library 'TerminalBlock_Phoenix'.
+    ; warning
+    @(201.9075 mm, 70.775 mm): Footprint J1
+[lib_footprint_mismatch]: Footprint 'C_0603_1608Metric' does not match copy in library 'Capacitor_SMD'.
+    ; warning
+    @(211.02 mm, 78.535 mm): Footprint C2
+[lib_footprint_mismatch]: Footprint 'C_0603_1608Metric' does not match copy in library 'Capacitor_SMD'.
+    ; warning
+    @(213.25 mm, 78.505 mm): Footprint C1
+
+** Found 0 unconnected pads **
+
+** Found 0 Footprint errors **
+
+** End of Report **

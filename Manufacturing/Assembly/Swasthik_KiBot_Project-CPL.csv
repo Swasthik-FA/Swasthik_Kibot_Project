@@ -1,0 +1,6 @@
+Ref,Val,Package,PosX,PosY,Rot,Side
+"C1","1uF","C_0603_1608Metric",149.2500,27.4950,-90.0000,top
+"C2","1uF","C_0603_1608Metric",147.0200,27.4650,-90.0000,top
+"J1","Screw_Terminal_01x02","TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal",137.9075,35.2250,-90.0000,top
+"J2","Screw_Terminal_01x02","TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal",157.1400,29.9400,90.0000,top
+"U1","NCP1117-3.3_SOT223","SOT-223-3_TabPin2",147.5500,33.5800,90.0000,top
