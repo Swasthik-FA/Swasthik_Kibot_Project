@@ -1,8 +1,8 @@
 ========================================================================
 SCHEMATIC NETLIST VALIDATION REPORT
 ========================================================================
-Date         : 2026-04-13 09:31:33 UTC
-Netlist file : Swasthik_KiBot_Project-netlist.net
+Date         : 2026-04-13 10:07:41 UTC
+Netlist file : design/pcb/outputs/Swasthik_KiBot_Project-netlist.net
 Components   : 5
 
 ------------------------------------------------------------------------
