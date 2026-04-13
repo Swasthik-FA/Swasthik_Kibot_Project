@@ -12,7 +12,8 @@ on:
       - '*.md'
 
 env:
-  kibot_config: kibot_yaml/kibot_main.yaml
+  kicad_dir: design/pcb/kicad
+  kibot_config: design/pcb/kicad/kibot_yaml/kibot_main.yaml
   # Used variant. We assume:
   # DRAFT: only schematic in progress, will only generate schematic PDF, netlist and BoM
   # PRELIMINARY: will generate both schematic and PCB documents, but no ERC/DRC
@@ -24,7 +25,7 @@ env:
   kicad_version: 9
 
   kibot_log: kibot_run.log
- 
+
 permissions:
   contents: write
 
@@ -52,13 +53,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           args: |
-            Schematic/*.pdf
-            Manufacturing/Assembly/*
-            Manufacturing/Fabrication/*.pdf
-            Manufacturing/Fabrication/*.zip
-            Manufacturing/Fabrication/*.txt
-            3D/*.step
-            Testing/Testpoints/*.csv
+            design/pcb/outputs/Schematic/*.pdf
+            design/pcb/outputs/Manufacturing/Assembly/*
+            design/pcb/outputs/Manufacturing/Fabrication/*.pdf
+            design/pcb/outputs/Manufacturing/Fabrication/*.zip
+            design/pcb/outputs/Manufacturing/Fabrication/*.txt
+            design/pcb/outputs/3D/*.step
+            design/pcb/outputs/Testing/Testpoints/*.csv
 
   generate_outputs:
     runs-on: ubuntu-latest
@@ -90,6 +91,7 @@ jobs:
         uses: thomaseizinger/keep-a-changelog-new-release@v2
         with:
           tag: ${{ github.ref_name }}
+          changelog: ${{ env.kicad_dir }}/CHANGELOG.md
 
       - name: Commit updated CHANGELOG
         if: ${{ github.ref_type == 'tag' }}
@@ -97,7 +99,7 @@ jobs:
         with:
           branch: main
           commit_message: Update CHANGELOG
-          file_pattern: CHANGELOG.md
+          file_pattern: ${{ env.kicad_dir }}/CHANGELOG.md
           push_options: '--force'
 
       - name: Cache 3D models data
@@ -155,6 +157,7 @@ jobs:
           skip: all
           variant: ${{ env.kibot_variant }}
           config: ${{ env.kibot_config }}
+          dir: ${{ env.kicad_dir }}
           additional_args: --log kibot_run_notes.log notes
 
       - name: Generate notes (KiCad 9)
@@ -164,6 +167,7 @@ jobs:
           skip: all
           variant: ${{ env.kibot_variant }}
           config: ${{ env.kibot_config }}
+          dir: ${{ env.kicad_dir }}
           additional_args: --log kibot_run_notes.log notes
 
       # Generate README only (only for DRAFT variant)
@@ -174,6 +178,7 @@ jobs:
           skip: draw_fancy_stackup,set_text_variables,erc,drc
           variant: ${{ env.kibot_variant }}
           config: ${{ env.kibot_config }}
+          dir: ${{ env.kicad_dir }}
           additional_args: --log kibot_run_readme.log md_readme
 
       - name: Generate README only (KiCad 9)
@@ -183,6 +188,7 @@ jobs:
           skip: draw_fancy_stackup,set_text_variables,erc,drc
           variant: ${{ env.kibot_variant }}
           config: ${{ env.kibot_config }}
+          dir: ${{ env.kicad_dir }}
           additional_args: --log kibot_run_readme.log md_readme
 
       # Generate outputs
@@ -193,6 +199,7 @@ jobs:
           additional_args: ${{ env.additional_args }}
           variant: ${{ env.kibot_variant }}
           config: ${{ env.kibot_config }}
+          dir: ${{ env.kicad_dir }}
           cache3D: YES
 
       - name: Generate outputs (KiCad 9)
@@ -202,6 +209,7 @@ jobs:
           additional_args: ${{ env.additional_args }}
           variant: ${{ env.kibot_variant }}
           config: ${{ env.kibot_config }}
+          dir: ${{ env.kicad_dir }}
           cache3D: YES
 
       - name: Pull latest changes
@@ -231,18 +239,18 @@ jobs:
       - name: Run netlist validation
         if: ${{ env.kibot_variant != 'DRAFT' }}
         run: |
-          python3 kibot_resources/scripts/validate_netlist.py \
-            -n *-netlist.net \
-            -o Reports
+          python3 ${{ env.kicad_dir }}/kibot_resources/scripts/validate_netlist.py \
+            -n ${{ env.kicad_dir }}/*-netlist.net \
+            -o design/pcb/reports
         continue-on-error: true
 
       - name: Discard changes to .kicad_pcb files and remove temp files
-        run: | 
-          git checkout HEAD -- $(git ls-files "*.kicad_pcb")
-          git clean -f "*.kicad_pcb"
-          git clean -f "*.kicad_pro"
-          git clean -f "*.kicad_dru"
-          git clean -f "*.kicad_prl"
+        run: |
+          git checkout HEAD -- $(git ls-files "*.kicad_pcb") 2>/dev/null || true
+          git clean -f "*.kicad_pcb" 2>/dev/null || true
+          git clean -f "*.kicad_pro" 2>/dev/null || true
+          git clean -f "*.kicad_dru" 2>/dev/null || true
+          git clean -f "*.kicad_prl" 2>/dev/null || true
 
       - name: Update Outputs
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -258,14 +266,14 @@ jobs:
           path: ${{ env.kibot_log }}
 
       - name: Store notes log
-        if: ${{ always() && env.kibot_variant != 'DRAFT' }} 
+        if: ${{ always() && env.kibot_variant != 'DRAFT' }}
         uses: actions/upload-artifact@v4
         with:
           name: log_file_notes
           path: kibot_run_notes.log
 
       - name: Store README log
-        if: ${{ always() && env.kibot_variant == 'DRAFT' }} 
+        if: ${{ always() && env.kibot_variant == 'DRAFT' }}
         uses: actions/upload-artifact@v4
         with:
           name: log_file_readme
