@@ -1,56 +1,243 @@
 ========================================================================
 SCHEMATIC NETLIST VALIDATION REPORT
 ========================================================================
-Date         : 2026-04-13 10:07:41 UTC
+Date         : 2026-04-13 11:44:53 UTC
 Netlist file : design/pcb/outputs/Swasthik_KiBot_Project-netlist.net
-Components   : 5
+Components   : 71
 
 ------------------------------------------------------------------------
-Component : J1 (Screw_Terminal_01x02)
-Part      : Screw_Terminal_01x02 [Connector]
+Component : J2 (USB_B_Micro)
+Part      : USB_B_Micro [Connector]
 Rules     : Categories: connector
 
-  PASS: Pin_1 connected (net 'GND')
-  PASS: Pin_2 connected (net 'Net-(J1-Pin_2)')
+  PASS: VBUS connected (net 'Net-(D6-A)')
+  PASS: D- connected (net 'Net-(J2-D-)')
+  PASS: D+ connected (net 'Net-(J2-D+)')
+  PASS: ID connected (net 'GND')
+  PASS: GND connected (net 'GND')
+  PASS: Shield connected (net 'GND')
 
 ------------------------------------------------------------------------
-Component : J2 (Screw_Terminal_01x02)
-Part      : Screw_Terminal_01x02 [Connector]
+Component : J3 (Conn_02x05_Odd_Even)
+Part      : Conn_02x05_Odd_Even [Connector_Generic]
 Rules     : Categories: connector
 
-  PASS: Pin_1 connected (net 'Net-(J2-Pin_1)')
-  PASS: Pin_2 connected (net 'GND')
+  PASS: Pin_1 connected (net '+3.3V')
+  PASS: Pin_2 connected (net 'unconnected-(J3-Pin_2-Pad2)')
+  PASS: Pin_3 connected (net 'unconnected-(J3-Pin_3-Pad3)')
+  PASS: Pin_4 connected (net 'unconnected-(J3-Pin_4-Pad4)')
+  PASS: Pin_5 connected (net 'unconnected-(J3-Pin_5-Pad5)')
+  PASS: Pin_6 connected (net 'LCD_CSX')
+  PASS: Pin_7 connected (net 'LCD_SCL')
+  PASS: Pin_8 connected (net 'LCD_MISO')
+  PASS: Pin_9 connected (net 'LCD_MOSI')
+  PASS: Pin_10 connected (net 'GND1')
 
 ------------------------------------------------------------------------
-Component : U1 (NCP1117-3.3_SOT223)
-Part      : NCP1117-3.3_SOT223 [Regulator_Linear]
-Rules     : Categories: voltage_regulator; Part rule: NCP1117-3.3_SOT223
+Component : J4 (Conn_02x05_Odd_Even)
+Part      : Conn_02x05_Odd_Even [Connector_Generic]
+Rules     : Categories: connector
+
+  PASS: Pin_1 connected (net 'unconnected-(J4-Pin_1-Pad1)')
+  PASS: Pin_2 connected (net 'LCD_DCX')
+  PASS: Pin_3 connected (net 'unconnected-(J4-Pin_3-Pad3)')
+  PASS: Pin_4 connected (net 'unconnected-(J4-Pin_4-Pad4)')
+  PASS: Pin_5 connected (net 'SD_CS')
+  PASS: Pin_6 connected (net 'SD_SCL')
+  PASS: Pin_7 connected (net 'SD_MISO')
+  PASS: Pin_8 connected (net 'SD_MOSI')
+  PASS: Pin_9 connected (net 'unconnected-(J4-Pin_9-Pad9)')
+  PASS: Pin_10 connected (net 'unconnected-(J4-Pin_10-Pad10)')
+
+------------------------------------------------------------------------
+Component : J5 (Conn_02x05_Odd_Even)
+Part      : Conn_02x05_Odd_Even [Connector_Generic]
+Rules     : Categories: connector
+
+  PASS: Pin_1 connected (net '+3.3V')
+  PASS: Pin_2 connected (net 'unconnected-(J5-Pin_2-Pad2)')
+  PASS: Pin_3 connected (net 'unconnected-(J5-Pin_3-Pad3)')
+  PASS: Pin_4 connected (net 'TP_RST')
+  PASS: Pin_5 connected (net 'TP_IN')
+  PASS: Pin_6 connected (net 'TP_SCL')
+  PASS: Pin_7 connected (net 'TP_SDA')
+  PASS: Pin_8 connected (net 'LCD_RST')
+  PASS: Pin_9 connected (net 'SD_DET')
+  PASS: Pin_10 connected (net 'GND1')
+
+------------------------------------------------------------------------
+Component : J6 (Micro_SD_Card_Det1)
+Part      : Micro_SD_Card_Det1 [Connector]
+Rules     : Categories: connector
+
+  PASS: DAT2 connected (net 'Net-(J6-DAT2)')
+  PASS: DAT3/CD connected (net 'SD_CS')
+  PASS: CMD connected (net 'SD_MOSI')
+  PASS: VDD connected (net '+3.3V')
+  PASS: CLK connected (net 'SD_SCL')
+  PASS: VSS connected (net 'GND1')
+  PASS: DAT0 connected (net 'SD_MISO')
+  PASS: DAT1 connected (net 'Net-(J6-DAT1)')
+  PASS: DET connected (net 'SD_DET')
+  PASS: SHIELD connected (net 'GND1')
+
+------------------------------------------------------------------------
+Component : P1 (Conn_02x05_Odd_Even)
+Part      : Conn_02x05_Odd_Even [Connector_Generic]
+Rules     : Categories: connector
+
+  PASS: Pin_1 connected (net '+3V3')
+  PASS: Pin_2 connected (net 'PC13')
+  PASS: Pin_3 connected (net 'LED_1')
+  PASS: Pin_4 connected (net 'LED_2')
+  PASS: Pin_5 connected (net 'LED_3')
+  PASS: Pin_6 connected (net 'PA4')
+  PASS: Pin_7 connected (net 'PA5')
+  PASS: Pin_8 connected (net 'PA6')
+  PASS: Pin_9 connected (net 'PA7')
+  PASS: Pin_10 connected (net 'GND')
+
+------------------------------------------------------------------------
+Component : P2 (Conn_02x05_Odd_Even)
+Part      : Conn_02x05_Odd_Even [Connector_Generic]
+Rules     : Categories: connector
+
+  PASS: Pin_1 connected (net 'PB0')
+  PASS: Pin_2 connected (net 'PB1')
+  PASS: Pin_3 connected (net 'PB10')
+  PASS: Pin_4 connected (net 'PB11')
+  PASS: Pin_5 connected (net 'PB12')
+  PASS: Pin_6 connected (net 'PB13')
+  PASS: Pin_7 connected (net 'PB14')
+  PASS: Pin_8 connected (net 'PB15')
+  PASS: Pin_9 connected (net 'USART1_TX')
+  PASS: Pin_10 connected (net 'USART1_RX')
+
+------------------------------------------------------------------------
+Component : P3 (Conn_02x05_Odd_Even)
+Part      : Conn_02x05_Odd_Even [Connector_Generic]
+Rules     : Categories: connector
+
+  PASS: Pin_1 connected (net '+3V3')
+  PASS: Pin_2 connected (net 'MPU_INT')
+  PASS: Pin_3 connected (net 'PA15')
+  PASS: Pin_4 connected (net 'PB4')
+  PASS: Pin_5 connected (net 'PB5')
+  PASS: Pin_6 connected (net 'I2C1_SCL')
+  PASS: Pin_7 connected (net 'I2C1_SDA')
+  PASS: Pin_8 connected (net 'PB8')
+  PASS: Pin_9 connected (net 'PB9')
+  PASS: Pin_10 connected (net 'GND')
+
+------------------------------------------------------------------------
+Component : U1 (STM32F303CCTx)
+Part      : STM32F303CCTx [MCU_ST_STM32F3]
+Rules     : Categories: mcu, crystal
+
+  PASS: Pin VBAT connected (net '+3V3', 24 connection(s))
+  PASS: Pin VDDA connected (net '+3V3', 24 connection(s))
+  PASS: Pin VDD connected (net '+3V3', 24 connection(s))
+  PASS: Pin VDD connected (net '+3V3', 24 connection(s))
+  PASS: Pin VDD connected (net '+3V3', 24 connection(s))
+  PASS: Pin VSSA connected to 'GND'
+  PASS: Pin VSS connected to 'GND'
+  PASS: Pin VSS connected to 'GND'
+  PASS: Pin VSS connected to 'GND'
+  PASS: Pin VDDA has C: C1=100nF, C17=1uF, C18=100nF, C2=100nF, C3=100nF, C4=4.7uF, C8=1uF, C9=10nF
+  PASS: Pin VDD has C: C1=100nF, C17=1uF, C18=100nF, C2=100nF, C3=100nF, C4=4.7uF, C8=1uF, C9=10nF
+  PASS: Pin VDD has C: C1=100nF, C17=1uF, C18=100nF, C2=100nF, C3=100nF, C4=4.7uF, C8=1uF, C9=10nF
+  PASS: Pin VDD has C: C1=100nF, C17=1uF, C18=100nF, C2=100nF, C3=100nF, C4=4.7uF, C8=1uF, C9=10nF
+  PASS: Pin NRST connected (net 'RESET', 4 connection(s))
+  PASS: Pin BOOT0 connected (net 'BOOT0', 1 connection(s))
+
+------------------------------------------------------------------------
+Component : U5 (TLV75733PDBV)
+Part      : TLV75733PDBV [Regulator_Linear]
+Rules     : Categories: voltage_regulator
 
   PASS: Pin GND connected to 'GND'
-  PASS: Pin VI connected (net 'Net-(J1-Pin_2)', 2 connection(s))
-  PASS: Pin VO connected (net 'Net-(J2-Pin_1)', 2 connection(s))
-  PASS: Pin VI has C: C1=1uF
-  PASS: Pin VO has C: C2=1uF
-  PASS: Pin GND connected to 'GND'
-  PASS: Pin VI not floating (2 connection(s))
-  PASS: Pin VI has C: C1=1uF
-  PASS: C1 (1uF) meets minimum 1.0uF
-  PASS: Pin VO not floating (2 connection(s))
-  PASS: Pin VO has C: C2=1uF
-  PASS: C2 (1uF) meets minimum 1.0uF
-  PASS: [input_cap_to_gnd] Input capacitor must connect between VI and GND — bridged by C1=1uF
-  PASS: [output_cap_to_gnd] Output capacitor must connect between VO and GND — bridged by C2=1uF
+  PASS: Pin IN connected (net '+5V', 4 connection(s))
+  PASS: Pin OUT connected (net '+3V3', 28 connection(s))
+  PASS: Pin IN has C: C7=1uF
+  PASS: Pin OUT has C: C1=100nF, C17=1uF, C18=100nF, C2=100nF, C3=100nF, C4=4.7uF, C8=1uF, C9=10nF
+  PASS: Pin EN connected (net '+5V', 4 connection(s))
+
+------------------------------------------------------------------------
+Component : Y1 (8MHz Crystal)
+Part      : Crystal [Device]
+Rules     : Categories: crystal
+
+  PASS: Pin 1 has C: C6=20pF
+  PASS: Pin 2 has C: C5=20pF
 
 ------------------------------------------------------------------------
 COMPONENTS WITHOUT MATCHING RULES (manual review needed):
-  C1         1uF                      C [Device]
-  C2         1uF                      C [Device]
+  BOOT0      SW3                      SW_Push [Switch]
+  C1         100nF                    C [Device]
+  C10        1uF                      C [Device]
+  C15        100nF                    C [Device]
+  C17        1uF                      C [Device]
+  C18        100nF                    C [Device]
+  C19        2.2nF                    C [Device]
+  C2         100nF                    C [Device]
+  C20        100nF                    C [Device]
+  C21        100nF                    C [Device]
+  C3         100nF                    C [Device]
+  C4         4.7uF                    C [Device]
+  C5         20pF                     C [Device]
+  C6         20pF                     C [Device]
+  C7         1uF                      C [Device]
+  C8         1uF                      C [Device]
+  C9         10nF                     C [Device]
+  D1         RED LED                  LED [Device]
+  D2         BLUE LED                 LED [Device]
+  D3         GREEN LED                LED [Device]
+  D4         RED LED                  LED [Device]
+  D5         1N5819WS                 1N5819WS [Diode]
+  D6         1N5819WS                 1N5819WS [Diode]
+  D7         1N5819WS                 1N5819WS [Diode]
+  D8         RED LED                  LED [Device]
+  H1         MountingHole             MountingHole [Mechanical]
+  H2         MountingHole             MountingHole [Mechanical]
+  H3         MountingHole             MountingHole [Mechanical]
+  H4         MountingHole             MountingHole [Mechanical]
+  JP1        SolderJumper_2_Open      SolderJumper_2_Open [Jumper]
+  R1         330                      R [Device]
+  R10        2.2K                     R [Device]
+  R11        2.2K                     R [Device]
+  R12        100                      R [Device]
+  R13        10K                      R [Device]
+  R14        330                      R [Device]
+  R15        330                      R [Device]
+  R16        330                      R [Device]
+  R17        10K                      R [Device]
+  R18        10K                      R [Device]
+  R19        10K                      R [Device]
+  R2         330                      R [Device]
+  R20        10K                      R [Device]
+  R21        10K                      R [Device]
+  R22        10K                      R [Device]
+  R23        10K                      R [Device]
+  R24        330                      R [Device]
+  R3         100                      R [Device]
+  R4         10K                      R [Device]
+  R5         20                       R [Device]
+  R6         20                       R [Device]
+  R7         1.5K                     R [Device]
+  R8         10K                      R [Device]
+  R9         330                      R [Device]
+  RESET1     SW1                      SW_Push [Switch]
+  U3         ~                        _1 [LCD_Con]
+  U4         CDSOT236-0504C           CDSOT236-0504C [Power_Protection]
+  U6         STLINK-V3MODS            STLINK-V3MODS [STLINK-V3MODS]
+  U8         MPU6050                  MPU6050 [MPU]
+  USER1      SW2                      SW_Push [Switch]
 
 ========================================================================
 SUMMARY
 ========================================================================
-Components validated : 3 / 5
-Checks passed       : 18
+Components validated : 11 / 71
+Checks passed       : 99
 Warnings            : 0
 Errors              : 0
 
