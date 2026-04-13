@@ -14,6 +14,8 @@ on:
 env:
   kicad_dir: design/pcb/kicad
   kibot_config: design/pcb/kicad/kibot_yaml/kibot_main.yaml
+  kibot_schema: design/pcb/kicad/Swasthik_KiBot_Project.kicad_sch
+  kibot_board: design/pcb/kicad/Swasthik_KiBot_Project.kicad_pcb
   # Used variant. We assume:
   # DRAFT: only schematic in progress, will only generate schematic PDF, netlist and BoM
   # PRELIMINARY: will generate both schematic and PCB documents, but no ERC/DRC
@@ -157,6 +159,8 @@ jobs:
           skip: all
           variant: ${{ env.kibot_variant }}
           config: ${{ env.kibot_config }}
+          schema: ${{ env.kibot_schema }}
+          board: ${{ env.kibot_board }}
           dir: ${{ env.kicad_dir }}
           additional_args: --log kibot_run_notes.log notes
 
@@ -167,6 +171,8 @@ jobs:
           skip: all
           variant: ${{ env.kibot_variant }}
           config: ${{ env.kibot_config }}
+          schema: ${{ env.kibot_schema }}
+          board: ${{ env.kibot_board }}
           dir: ${{ env.kicad_dir }}
           additional_args: --log kibot_run_notes.log notes
 
@@ -178,6 +184,8 @@ jobs:
           skip: draw_fancy_stackup,set_text_variables,erc,drc
           variant: ${{ env.kibot_variant }}
           config: ${{ env.kibot_config }}
+          schema: ${{ env.kibot_schema }}
+          board: ${{ env.kibot_board }}
           dir: ${{ env.kicad_dir }}
           additional_args: --log kibot_run_readme.log md_readme
 
@@ -188,6 +196,8 @@ jobs:
           skip: draw_fancy_stackup,set_text_variables,erc,drc
           variant: ${{ env.kibot_variant }}
           config: ${{ env.kibot_config }}
+          schema: ${{ env.kibot_schema }}
+          board: ${{ env.kibot_board }}
           dir: ${{ env.kicad_dir }}
           additional_args: --log kibot_run_readme.log md_readme
 
@@ -199,6 +209,8 @@ jobs:
           additional_args: ${{ env.additional_args }}
           variant: ${{ env.kibot_variant }}
           config: ${{ env.kibot_config }}
+          schema: ${{ env.kibot_schema }}
+          board: ${{ env.kibot_board }}
           dir: ${{ env.kicad_dir }}
           cache3D: YES
 
@@ -209,6 +221,8 @@ jobs:
           additional_args: ${{ env.additional_args }}
           variant: ${{ env.kibot_variant }}
           config: ${{ env.kibot_config }}
+          schema: ${{ env.kibot_schema }}
+          board: ${{ env.kibot_board }}
           dir: ${{ env.kicad_dir }}
           cache3D: YES
 
