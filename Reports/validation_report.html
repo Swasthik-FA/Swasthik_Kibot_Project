@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Netlist Validation Report</title>
+<style>
+  :root {
+    --bg: #1a1a2e;
+    --bg-card: #16213e;
+    --bg-row-alt: #1a2640;
+    --text: #e0e0e0;
+    --text-dim: #8899aa;
+    --border: #2a3a5c;
+    --pass: #27ae60;
+    --warn: #f39c12;
+    --fail: #e74c3c;
+    --accent: #3498db;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, monospace;
+    background: var(--bg);
+    color: var(--text);
+    padding: 20px;
+    line-height: 1.6;
+  }
+  .container { max-width: 1200px; margin: 0 auto; }
+  h1 { color: var(--accent); margin-bottom: 5px; font-size: 1.5em; }
+  .subtitle { color: var(--text-dim); margin-bottom: 20px; font-size: 0.9em; }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 25px;
+  }
+  .summary-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+  }
+  .summary-card .number {
+    font-size: 2em;
+    font-weight: bold;
+    display: block;
+  }
+  .summary-card .label {
+    font-size: 0.85em;
+    color: var(--text-dim);
+  }
+  .overall-badge {
+    display: inline-block;
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 20px;
+  }
+  .comp-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .comp-header {
+    padding: 12px 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    user-select: none;
+  }
+  .comp-header:hover { background: var(--bg-row-alt); }
+  .comp-header .comp-name { font-weight: bold; font-size: 1.05em; }
+  .comp-header .comp-info { color: var(--text-dim); font-size: 0.85em; }
+  .comp-header .badges { display: flex; gap: 6px; }
+  .badge {
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+  }
+  .badge-pass { background: var(--pass); color: #fff; }
+  .badge-warn { background: var(--warn); color: #fff; }
+  .badge-fail { background: var(--fail); color: #fff; }
+  .badge-cat {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+  }
+  .comp-body { padding: 0; display: none; }
+  .comp-body.open { display: block; }
+  .check-row {
+    display: flex;
+    align-items: flex-start;
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9em;
+  }
+  .check-row:last-child { border-bottom: none; }
+  .check-row:nth-child(even) { background: var(--bg-row-alt); }
+  .check-icon {
+    width: 22px;
+    min-width: 22px;
+    font-size: 1.1em;
+    margin-right: 10px;
+    text-align: center;
+  }
+  .check-pass .check-icon { color: var(--pass); }
+  .check-warn .check-icon { color: var(--warn); }
+  .check-fail .check-icon { color: var(--fail); }
+  .unvalidated-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 20px;
+  }
+  .unvalidated-section h3 { color: var(--text-dim); margin-bottom: 10px; }
+  .unvalidated-list { color: var(--text-dim); font-size: 0.9em; }
+  .unvalidated-list div { padding: 3px 0; font-family: monospace; }
+  .chevron {
+    transition: transform 0.2s;
+    display: inline-block;
+    margin-right: 5px;
+  }
+  .chevron.open { transform: rotate(90deg); }
+  footer {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.8em;
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Netlist Validation Report</h1>
+<div class="subtitle">2026-04-13 09:25:45 UTC &mdash; Swasthik_KiBot_Project-netlist.net</div>
+<div class="overall-badge" style="background:#27ae60;color:#fff;">PASS</div>
+<div class="summary-grid">
+<div class="summary-card"><span class="number">3/5</span><span class="label">Components Validated</span></div>
+<div class="summary-card"><span class="number" style="color:var(--pass)">18</span><span class="label">Passed</span></div>
+<div class="summary-card"><span class="number" style="color:var(--warn)">0</span><span class="label">Warnings</span></div>
+<div class="summary-card"><span class="number" style="color:var(--fail)">0</span><span class="label">Errors</span></div>
+</div>
+<div class="comp-section">
+<div class="comp-header" onclick="toggleBody(this)">
+<div><span class="chevron">&#9654;</span><span class="comp-name">J1</span> 
+<span class="comp-info">&mdash; Screw_Terminal_01x02 [Connector]</span></div>
+<div class="badges">
+<span class="badge badge-cat">connector</span>
+<span class="badge badge-pass">2 pass</span>
+</div></div>
+<div class="comp-body">
+<div class="check-row check-pass"><span class="check-icon">&#10003;</span><span>Pin_1 connected (net 'GND')</span></div>
+<div class="check-row check-pass"><span class="check-icon">&#10003;</span><span>Pin_2 connected (net 'Net-(J1-Pin_2)')</span></div>
+</div></div>
+<div class="comp-section">
+<div class="comp-header" onclick="toggleBody(this)">
+<div><span class="chevron">&#9654;</span><span class="comp-name">J2</span> 
+<span class="comp-info">&mdash; Screw_Terminal_01x02 [Connector]</span></div>
+<div class="badges">
+<span class="badge badge-cat">connector</span>
+<span class="badge badge-pass">2 pass</span>
+</div></div>
+<div class="comp-body">
+<div class="check-row check-pass"><span class="check-icon">&#10003;</span><span>Pin_1 connected (net 'Net-(J2-Pin_1)')</span></div>
+<div class="check-row check-pass"><span class="check-icon">&#10003;</span><span>Pin_2 connected (net 'GND')</span></div>
+</div></div>
+<div class="comp-section">
+<div class="comp-header" onclick="toggleBody(this)">
+<div><span class="chevron">&#9654;</span><span class="comp-name">U1</span> 
+<span class="comp-info">&mdash; NCP1117-3.3_SOT223 [Regulator_Linear]</span></div>
+<div class="badges">
+<span class="badge badge-cat">voltage_regulator</span>
+<span class="badge badge-cat">part-specific</span>
+<span class="badge badge-pass">14 pass</span>
+</div></div>
+<div class="comp-body">
+<div class="check-row check-pass"><span class="check-icon">&#10003;</span><span>Pin GND connected to 'GND'</span></div>
+<div class="check-row check-pass"><span class="check-icon">&#10003;</span><span>Pin VI connected (net 'Net-(J1-Pin_2)', 2 connection(s))</span></div>
+<div class="check-row check-pass"><span class="check-icon">&#10003;</span><span>Pin VO connected (net 'Net-(J2-Pin_1)', 2 connection(s))</span></div>
+<div class="check-row check-pass"><span class="check-icon">&#10003;</span><span>Pin VI has C: C1=1uF</span></div>
+<div class="check-row check-pass"><span class="check-icon">&#10003;</span><span>Pin VO has C: C2=1uF</span></div>
+<div class="check-row check-pass"><span class="check-icon">&#10003;</span><span>Pin GND connected to 'GND'</span></div>
+<div class="check-row check-pass"><span class="check-icon">&#10003;</span><span>Pin VI not floating (2 connection(s))</span></div>
+<div class="check-row check-pass"><span class="check-icon">&#10003;</span><span>Pin VI has C: C1=1uF</span></div>
+<div class="check-row check-pass"><span class="check-icon">&#10003;</span><span>C1 (1uF) meets minimum 1.0uF</span></div>
+<div class="check-row check-pass"><span class="check-icon">&#10003;</span><span>Pin VO not floating (2 connection(s))</span></div>
+<div class="check-row check-pass"><span class="check-icon">&#10003;</span><span>Pin VO has C: C2=1uF</span></div>
+<div class="check-row check-pass"><span class="check-icon">&#10003;</span><span>C2 (1uF) meets minimum 1.0uF</span></div>
+<div class="check-row check-pass"><span class="check-icon">&#10003;</span><span>[input_cap_to_gnd] Input capacitor must connect between VI and GND — bridged by C1=1uF</span></div>
+<div class="check-row check-pass"><span class="check-icon">&#10003;</span><span>[output_cap_to_gnd] Output capacitor must connect between VO and GND — bridged by C2=1uF</span></div>
+</div></div>
+<div class="unvalidated-section">
+<h3>Components Without Matching Rules (2)</h3>
+<div class="unvalidated-list">
+<div>C1         &mdash; 1uF &mdash; C [Device]</div>
+<div>C2         &mdash; 1uF &mdash; C [Device]</div>
+</div></div>
+
+<footer>Generated by validate_netlist.py &mdash; Netlist Validation Script for KiCad</footer>
+</div>
+<script>
+function toggleBody(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.chevron');
+  if (body.classList.contains('open')) {
+    body.classList.remove('open');
+    chevron.classList.remove('open');
+  } else {
+    body.classList.add('open');
+    chevron.classList.add('open');
+  }
+}
+// Expand sections with errors/warnings by default
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.comp-section').forEach(function(section) {
+    if (section.querySelector('.check-fail, .check-warn')) {
+      const body = section.querySelector('.comp-body');
+      const chevron = section.querySelector('.chevron');
+      body.classList.add('open');
+      chevron.classList.add('open');
+    }
+  });
+});
+</script>
+</body>
+</html>
