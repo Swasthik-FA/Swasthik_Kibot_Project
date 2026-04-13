@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -lh /c/Users/bhara/Desktop/kicad_project/Swasthik_KiBot_Project/*.kicad_* /c/Users/bhara/Desktop/kicad_project/Swasthik_KiBot_Project/*.kicad_sch)",
+      "Bash(find:*)"
+    ]
+  }
+}
