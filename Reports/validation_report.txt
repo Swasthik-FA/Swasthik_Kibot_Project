@@ -1,0 +1,42 @@
+========================================================================
+SCHEMATIC NETLIST VALIDATION REPORT
+========================================================================
+Netlist file : Swasthik_KiBot_Project-netlist.net
+Components   : 5
+Nets         : 3
+
+------------------------------------------------------------------------
+Component    : U1
+Value        : NCP1117-3.3_SOT223
+Part         : NCP1117-3.3_SOT223
+Rule matched : NCP1117-3.3_SOT223
+Datasheet    : http://www.onsemi.com/pub_link/Collateral/NCP1117-D.PDF
+Description  : 1A 3.3V Fixed LDO Regulator (NCP1117)
+
+  PASS: Pin GND connected to 'GND' (requires 'GND')
+  PASS: Pin VI is not floating (net 'Net-(J1-Pin_2)', 2 other connection(s))
+  PASS: Pin VI has required component(s): C1=1uF
+  PASS: C1 value (1uF) meets minimum 1.0uF
+  PASS: Pin VO is not floating (net 'Net-(J2-Pin_1)', 2 other connection(s))
+  PASS: Pin VO has required component(s): C2=1uF
+  PASS: C2 value (1uF) meets minimum 1.0uF
+  PASS: [input_cap_to_gnd] Input capacitor must connect between VI and GND — bridged by C1=1uF
+  PASS: [output_cap_to_gnd] Output capacitor must connect between VO and GND — bridged by C2=1uF
+
+------------------------------------------------------------------------
+COMPONENTS WITHOUT VALIDATION RULES (manual review needed):
+  C1       1uF                  C
+  C2       1uF                  C
+  J1       Screw_Terminal_01x02 Screw_Terminal_01x02
+  J2       Screw_Terminal_01x02 Screw_Terminal_01x02
+
+========================================================================
+SUMMARY
+========================================================================
+Components validated : 1
+Checks passed       : 9
+Warnings            : 0
+Errors              : 0
+
+RESULT: PASS — All checks passed.
+========================================================================

@@ -228,6 +228,14 @@ jobs:
             git pull origin ${{ github.ref_name }} --tags --force
           fi
 
+      - name: Run netlist validation
+        if: ${{ env.kibot_variant != 'DRAFT' }}
+        run: |
+          python3 kibot_resources/scripts/validate_netlist.py \
+            -n *-netlist.net \
+            -o Reports/validation_report.txt
+        continue-on-error: true
+
       - name: Discard changes to .kicad_pcb files and remove temp files
         run: | 
           git checkout HEAD -- $(git ls-files "*.kicad_pcb")
