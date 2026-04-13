@@ -12,8 +12,7 @@ on:
       - '*.md'
 
 env:
-  kicad_dir: design/pcb/kicad
-  kibot_config: design/pcb/kicad/kibot_yaml/kibot_main.yaml
+  kibot_config: kibot_yaml/kibot_main.yaml
   kibot_schema: design/pcb/kicad/Swasthik_KiBot_Project.kicad_sch
   kibot_board: design/pcb/kicad/Swasthik_KiBot_Project.kicad_pcb
   # Used variant. We assume:
@@ -93,7 +92,6 @@ jobs:
         uses: thomaseizinger/keep-a-changelog-new-release@v2
         with:
           tag: ${{ github.ref_name }}
-          changelog: ${{ env.kicad_dir }}/CHANGELOG.md
 
       - name: Commit updated CHANGELOG
         if: ${{ github.ref_type == 'tag' }}
@@ -101,7 +99,7 @@ jobs:
         with:
           branch: main
           commit_message: Update CHANGELOG
-          file_pattern: ${{ env.kicad_dir }}/CHANGELOG.md
+          file_pattern: CHANGELOG.md
           push_options: '--force'
 
       - name: Cache 3D models data
@@ -161,7 +159,6 @@ jobs:
           config: ${{ env.kibot_config }}
           schema: ${{ env.kibot_schema }}
           board: ${{ env.kibot_board }}
-          dir: ${{ env.kicad_dir }}
           additional_args: --log kibot_run_notes.log notes
 
       - name: Generate notes (KiCad 9)
@@ -173,7 +170,6 @@ jobs:
           config: ${{ env.kibot_config }}
           schema: ${{ env.kibot_schema }}
           board: ${{ env.kibot_board }}
-          dir: ${{ env.kicad_dir }}
           additional_args: --log kibot_run_notes.log notes
 
       # Generate README only (only for DRAFT variant)
@@ -186,7 +182,6 @@ jobs:
           config: ${{ env.kibot_config }}
           schema: ${{ env.kibot_schema }}
           board: ${{ env.kibot_board }}
-          dir: ${{ env.kicad_dir }}
           additional_args: --log kibot_run_readme.log md_readme
 
       - name: Generate README only (KiCad 9)
@@ -198,7 +193,6 @@ jobs:
           config: ${{ env.kibot_config }}
           schema: ${{ env.kibot_schema }}
           board: ${{ env.kibot_board }}
-          dir: ${{ env.kicad_dir }}
           additional_args: --log kibot_run_readme.log md_readme
 
       # Generate outputs
@@ -211,7 +205,6 @@ jobs:
           config: ${{ env.kibot_config }}
           schema: ${{ env.kibot_schema }}
           board: ${{ env.kibot_board }}
-          dir: ${{ env.kicad_dir }}
           cache3D: YES
 
       - name: Generate outputs (KiCad 9)
@@ -223,7 +216,6 @@ jobs:
           config: ${{ env.kibot_config }}
           schema: ${{ env.kibot_schema }}
           board: ${{ env.kibot_board }}
-          dir: ${{ env.kicad_dir }}
           cache3D: YES
 
       - name: Pull latest changes
@@ -253,8 +245,8 @@ jobs:
       - name: Run netlist validation
         if: ${{ env.kibot_variant != 'DRAFT' }}
         run: |
-          python3 ${{ env.kicad_dir }}/kibot_resources/scripts/validate_netlist.py \
-            -n ${{ env.kicad_dir }}/*-netlist.net \
+          python3 kibot_resources/scripts/validate_netlist.py \
+            -n design/pcb/outputs/*-netlist.net \
             -o design/pcb/reports
         continue-on-error: true
 

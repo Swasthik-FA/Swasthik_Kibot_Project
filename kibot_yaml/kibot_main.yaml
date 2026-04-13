@@ -243,7 +243,7 @@ import:
     definitions:
       NAME: @NETLIST_OUTPUT@
       COMMENT: Schematic netlist in KiCad format
-      DIR: ../outputs
+      DIR: design/pcb/outputs
 
   # Generic manufacturing outputs ==============================================
 
@@ -523,14 +523,14 @@ import:
     definitions:
       NAME: @HTML_KICANVAS_OUTPUT@
       COMMENT: KiCanvas webpage
-      DIR: ../outputs/KiCanvas
+      DIR: design/pcb/outputs/KiCanvas
 
   # Generate webpage with diffs between commits
   - file: kibot_out_html_kiri.yaml
     definitions:
       NAME: @HTML_KIRI_OUTPUT@
       COMMENT: KiRI webpage
-      DIR: ../outputs/KiRI
+      DIR: design/pcb/outputs/KiRI
 
   # README.md file generation
   - file: kibot_out_md_report.yaml
@@ -546,7 +546,7 @@ import:
     definitions:
       NAME: @HTML_NAV_RES_OUTPUT@
       COMMENT: Results webpage in HTML format
-      DIR: ../outputs/HTML
+      DIR: design/pcb/outputs/HTML
       TITLE: @BOARD_NAME@
       LOGO: @LOGO@
       LOGO_URL: @GIT_URL@
@@ -608,21 +608,21 @@ definitions:
 
   # Output directories =========================================================
 
-  # Root (relative to KiCad project dir, go up to design/pcb/)
+  # Root
   OUTPUT_DIR: ./
 
-  # Outputs go to design/pcb/outputs/ (relative to kicad dir)
-  REPORT_DIR: ../reports
-  SCHEMATIC_DIR: ../outputs/Schematic
-  MANUFACTURING_DIR: ../outputs/Manufacturing
+  # All outputs under design/pcb/ (paths from repo root)
+  REPORT_DIR: design/pcb/reports
+  SCHEMATIC_DIR: design/pcb/outputs/Schematic
+  MANUFACTURING_DIR: design/pcb/outputs/Manufacturing
   ASSEMBLY_DIR: '@MANUFACTURING_DIR@/Assembly'
   FABRICATION_DIR: '@MANUFACTURING_DIR@/Fabrication'
   GERBERS_DIR: '@FABRICATION_DIR@/Gerbers'
   FAB_DRILL_TABLES_DIR: '@FABRICATION_DIR@/Drill Tables'
-  TESTING_DIR: ../outputs/Testing
+  TESTING_DIR: design/pcb/outputs/Testing
   TESTPOINTS_DIR: '@TESTING_DIR@/Testpoints'
-  IMAGES_DIR: ../outputs/Images
-  3D_DIR: ../outputs/3D
+  IMAGES_DIR: design/pcb/outputs/Images
+  3D_DIR: design/pcb/outputs/3D
   RESOURCES_DIR: kibot_resources
   REPORT_TEMPLATE_DIR: '@RESOURCES_DIR@/templates'
   SCRIPTS_DIR: '@RESOURCES_DIR@/scripts'
