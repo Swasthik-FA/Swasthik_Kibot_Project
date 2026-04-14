@@ -6,7 +6,6 @@ name: PCB CI Gate
 
 on:
   push:
-    branches: [dev, qa, main]
     paths-ignore:
       - '*.md'
   pull_request:
