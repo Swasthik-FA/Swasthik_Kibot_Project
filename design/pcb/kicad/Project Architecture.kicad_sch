@@ -7764,28 +7764,6 @@
 			)
 		)
 	)
-	(global_label "USB_DP"
-		(shape input)
-		(at 111.76 90.17 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "26004772-8550-472a-9d9d-d05d413f366c")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 121.9834 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-	)
 	(global_label "LED_1"
 		(shape input)
 		(at 212.09 102.87 180)
@@ -8578,6 +8556,28 @@
 			)
 		)
 	)
+	(global_label "USB_DM"
+		(shape input)
+		(at 111.76 90.17 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "99d59ad4-1ece-4e4b-a448-937b9792f581")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 122.1648 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "USART1_RX"
 		(shape input)
 		(at 233.68 144.78 0)
@@ -8996,28 +8996,6 @@
 			)
 		)
 	)
-	(global_label "USB_DM"
-		(shape input)
-		(at 111.76 92.71 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "e4dbf0cb-8f47-406e-92cc-2820333a80f9")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 122.1648 92.71 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-	)
 	(global_label "PA4"
 		(shape input)
 		(at 111.76 72.39 0)
@@ -9168,6 +9146,28 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "USB_DP"
+		(shape input)
+		(at 111.76 92.71 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "feb77848-c1dc-4679-ba15-f93ac69e6e6f")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 121.9834 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 				(hide yes)
 			)
 		)
@@ -10294,109 +10294,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 322.58 81.28 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "286794a9-dcd3-45a4-944e-bc2de62a311d")
-		(property "Reference" "R6"
-			(at 318.262 82.804 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "20"
-			(at 323.088 84.074 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 322.58 83.058 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 322.58 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 322.58 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "RC0402FR-0720RL "
-			(at 322.58 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "YAGEO "
-			(at 322.58 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC" "C138031"
-			(at 322.58 81.28 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" "RC0402FR-0720RL"
-			(at 322.58 81.28 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "0e3ebaac-a28d-4d43-876e-5f140c21eca9")
-		)
-		(pin "2"
-			(uuid "109aa7c9-3d7c-4642-9fec-06150bb308d6")
-		)
-		(instances
-			(project "Swasthik_KiBot_Project"
-				(path "/f9e05184-c88b-4a88-ae9c-ab2bdb32be7c/c5103ceb-5325-4a84-a025-9638a412984e"
-					(reference "R6")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 360.68 181.61 90)
 		(unit 1)
@@ -10524,109 +10421,6 @@
 			(project "Swasthik_KiBot_Project"
 				(path "/f9e05184-c88b-4a88-ae9c-ab2bdb32be7c/c5103ceb-5325-4a84-a025-9638a412984e"
 					(reference "#PWR02")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 322.58 78.74 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "3dc89451-0c05-4b1d-aa22-175122ff4788")
-		(property "Reference" "R5"
-			(at 318.77 76.2 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "20"
-			(at 323.088 76.2 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 322.58 80.01 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 322.58 78.74 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 322.58 78.74 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "RC0402FR-0720RL "
-			(at 322.58 78.74 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "YAGEO "
-			(at 322.58 78.74 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC" "C138031"
-			(at 322.58 78.74 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" "RC0402FR-0720RL"
-			(at 322.58 78.74 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "f47a9275-69d3-44dc-955c-df16a2fa346d")
-		)
-		(pin "2"
-			(uuid "ccbcb2b3-f13b-478d-8aad-5d7b737e291f")
-		)
-		(instances
-			(project "Swasthik_KiBot_Project"
-				(path "/f9e05184-c88b-4a88-ae9c-ab2bdb32be7c/c5103ceb-5325-4a84-a025-9638a412984e"
-					(reference "R5")
 					(unit 1)
 				)
 			)
