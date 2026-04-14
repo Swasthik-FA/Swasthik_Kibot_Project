@@ -241,9 +241,119 @@ PART_RULES = {
             },
         },
     },
+    # =========================================================================
+    # STM32F303CCTx — Arm Cortex-M4, LQFP-48
+    # Datasheet: https://www.st.com/resource/en/datasheet/stm32f303cc.pdf
+    # =========================================================================
+    "STM32F303CCTx": {
+        "part_description": "STM32F303CC Arm Cortex-M4 MCU, 256KB flash, 48KB RAM, 72 MHz",
+        "datasheet": "https://www.st.com/resource/en/datasheet/stm32f303cc.pdf",
+        "pins": {
+            # === Power supply (DS Section 6.1.6) ===
+            # All VDD pins must connect to +3V3 rail with 100nF bypass cap each
+            "VDD": {
+                "must_not_float": True,
+                "must_have_comp": "C",
+                "rec_cap_value_uf": 0.1,
+                "description": "VDD pins require 100nF bypass capacitor (DS Table 18)",
+            },
+            "VDDA": {
+                "must_not_float": True,
+                "must_have_comp": "C",
+                "rec_cap_value_uf": 0.1,
+                "description": "VDDA requires 1uF + 100nF filtering (DS Section 6.1.6)",
+            },
+            "VBAT": {
+                "must_not_float": True,
+                "description": "VBAT must connect to VDD or battery (DS Section 6.1.4)",
+            },
+            # Ground pins must be on GND net
+            "VSS": {
+                "must_connect_to_net": "GND",
+                "description": "VSS must connect to GND",
+            },
+            "VSSA": {
+                "must_connect_to_net": "GND",
+                "description": "VSSA must connect to GND (DS Section 6.1.6)",
+            },
+
+            # === Reset (DS Section 6.1.3) ===
+            # NRST requires external 100nF filter cap and pull-up resistor
+            "NRST": {
+                "must_not_float": True,
+                "must_have_comp": "C",
+                "rec_cap_value_uf": 0.1,
+                "description": "NRST requires 100nF filter cap to GND (DS Figure 15)",
+            },
+
+            # === Boot configuration (DS Section 6.3.1) ===
+            "BOOT0": {
+                "must_not_float": True,
+                "description": "BOOT0 must be tied to GND or VDD (DS Table 10)",
+            },
+
+            # === USB (DS Section 6.1.10) ===
+            # PA11 = USB_DM (D-), PA12 = USB_DP (D+) — per DS pinout table
+            # STM32F303CC note: PA11 is D- (DM), PA12 is D+ (DP) — not swapped
+            "PA11": {
+                "must_not_float": True,
+                "must_have_comp": "R",
+                "description": "PA11 (USB_DM/D-) must connect to USB D- via series resistor",
+            },
+            "PA12": {
+                "must_not_float": True,
+                "must_have_comp": "R",
+                "description": "PA12 (USB_DP/D+) must connect to USB D+ via series resistor",
+            },
+
+            # === SWD debug interface (DS Section 6.3.4) ===
+            "PA13": {
+                "must_not_float": True,
+                "description": "PA13 (SWDIO) must connect to debug header or ST-Link",
+            },
+            "PA14": {
+                "must_not_float": True,
+                "description": "PA14 (SWCLK) must connect to debug header or ST-Link",
+            },
+
+            # === I2C (application-specific) ===
+            "PB6": {
+                "must_not_float": True,
+                "must_have_comp": "R",
+                "description": "PB6 (I2C1_SCL) requires pull-up resistor",
+            },
+            "PB7": {
+                "must_not_float": True,
+                "must_have_comp": "R",
+                "description": "PB7 (I2C1_SDA) requires pull-up resistor",
+            },
+        },
+        "global_checks": {
+            # VDD to VSS decoupling (DS Section 6.1.6, Table 18)
+            "vdd_bypass_cap": {
+                "description": "Each VDD pin needs 100nF cap to nearest VSS (DS Table 18)",
+                "pin_a": "VDD",
+                "pin_b": "VSS",
+                "bridge_comp": "C",
+            },
+            # VDDA to VSSA decoupling
+            "vdda_bypass_cap": {
+                "description": "VDDA needs 1uF+100nF cap to VSSA (DS Section 6.1.6)",
+                "pin_a": "VDDA",
+                "pin_b": "VSSA",
+                "bridge_comp": "C",
+            },
+            # Reset filter cap
+            "nrst_filter_cap": {
+                "description": "NRST needs 100nF filter cap to GND (DS Figure 15)",
+                "pin_a": "NRST",
+                "pin_b": "VSS",
+                "bridge_comp": "C",
+            },
+        },
+    },
     # Add more part-specific rules as your team encounters new ICs:
     # "AMS1117-3.3": { ... },
-    # "STM32F405RGT6": { ... },
 }
 
 
