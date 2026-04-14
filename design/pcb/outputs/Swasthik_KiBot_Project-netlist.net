@@ -1,6 +1,6 @@
 (export (version "E")
   (design
-    (source "/tmp/tmp-kibot-net_sch_print-9iei1xcm/Swasthik_KiBot_Project.kicad_sch")
+    (source "/tmp/tmp-kibot-net_sch_print-wtxzn34r/Swasthik_KiBot_Project.kicad_sch")
     (date "Date")
     (tool "Eeschema 9.0.7+1")
     (textvar (name "ASSEMBLY_NOTES") "ASSEMBLY NOTES (UNLESS OTHERWISE SPECIFIED)\n\n1)	DO NOT POPULATE PARTS ARE MARKED WITH A RED CROSS.\n\n2)	DO NOT POPULATE PARTS ARE NOT PRESENT IN THE BOM.\n\n3)	IF CONFLICTING INFORMATION IS FOUND BETWEEN THE ASSEMBLY\n	FILE AND BOM, BOM SHOULD BE USED AS THE MAIN SOURCE.\n\n4)	CONFORMAL COATING IS NOT REQUIRED.\n\n5)	DOT IDENTIFIES PIN #1 LOCATION AND DEVICE ORIENTATION\n	WHEN VIEWED FROM THE TOP.")
@@ -17,8 +17,8 @@
     (textvar (name "RELEASE_BODY_1.0.2"))
     (textvar (name "RELEASE_BODY_1.1.0"))
     (textvar (name "RELEASE_BODY_UNRELEASED") "Version Unreleased not found.")
-    (textvar (name "RELEASE_DATE") "13-Apr-2026")
-    (textvar (name "RELEASE_DATE_NUM") "2026-04-13")
+    (textvar (name "RELEASE_DATE") "14-Apr-2026")
+    (textvar (name "RELEASE_DATE_NUM") "2026-04-14")
     (textvar (name "RELEASE_TITLE_1.0.0"))
     (textvar (name "RELEASE_TITLE_1.0.1"))
     (textvar (name "RELEASE_TITLE_1.0.2"))

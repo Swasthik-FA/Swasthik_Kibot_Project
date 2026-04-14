@@ -83,8 +83,8 @@
     <textvar name="RELEASE_BODY_1.0.2"/>
     <textvar name="RELEASE_BODY_1.1.0"/>
     <textvar name="RELEASE_BODY_UNRELEASED">Version Unreleased not found.</textvar>
-    <textvar name="RELEASE_DATE">13-Apr-2026</textvar>
-    <textvar name="RELEASE_DATE_NUM">2026-04-13</textvar>
+    <textvar name="RELEASE_DATE">14-Apr-2026</textvar>
+    <textvar name="RELEASE_DATE_NUM">2026-04-14</textvar>
     <textvar name="RELEASE_TITLE_1.0.0"/>
     <textvar name="RELEASE_TITLE_1.0.1"/>
     <textvar name="RELEASE_TITLE_1.0.2"/>
