@@ -27,5 +27,12 @@ kibot_run*.log
 # Pre-push hook temp reports
 .pre-push-checks/
 
+# License
+LICENSE
+
+# Markdown files (except README.md)
+*.md
+!README.md
+
 # Claude Code local settings
 .claude/
