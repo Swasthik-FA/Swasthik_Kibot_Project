@@ -313,7 +313,6 @@ jobs:
           python3 kibot_resources/scripts/validate_netlist.py \
             -n design/pcb/outputs/*-netlist.net \
             -o design/pcb/reports
-        continue-on-error: true
 
       - name: Discard changes to .kicad_pcb files and remove temp files
         run: |

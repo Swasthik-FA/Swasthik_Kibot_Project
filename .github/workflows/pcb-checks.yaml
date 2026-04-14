@@ -127,6 +127,19 @@ jobs:
           LINES=$(wc -l < "$BOM")
           echo "BOM exported: $LINES lines"
 
+      # --- Netlist Validation (STM32 datasheet rules) ---
+      - name: Export netlist
+        run: |
+          kicad-cli sch export netlist \
+            --output ${{ env.REPORT_DIR }}/ci_netlist.net \
+            ${{ env.KICAD_SCH }}
+
+      - name: Run netlist validation
+        run: |
+          python3 kibot_resources/scripts/validate_netlist.py \
+            -n ${{ env.REPORT_DIR }}/ci_netlist.net \
+            -o ${{ env.REPORT_DIR }}
+
       # --- Upload artifacts ---
       - name: Archive CI reports
         if: always()
@@ -137,3 +150,6 @@ jobs:
             ${{ env.REPORT_DIR }}/ci_erc_report.rpt
             ${{ env.REPORT_DIR }}/ci_drc_report.rpt
             ${{ env.REPORT_DIR }}/ci_bom.csv
+            ${{ env.REPORT_DIR }}/ci_netlist.net
+            ${{ env.REPORT_DIR }}/validation_report.txt
+            ${{ env.REPORT_DIR }}/validation_report.html
