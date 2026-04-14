@@ -6,13 +6,9 @@ on:
     tags:
       - 'hw-v*' # SOP tag format: hw-vX.Y.Z-revL
     branches:
-      - main
-      - qa
       - dev
     paths-ignore:
       - '*.md'
-  pull_request:
-    branches: [dev, qa, main]
 
 env:
   kibot_config: kibot_yaml/kibot_main.yaml
@@ -34,6 +30,68 @@ permissions:
   contents: write
 
 jobs:
+  # SOP Section 10: ERC/DRC/BOM gate must pass before output generation
+  pcb-gate:
+    runs-on: ubuntu-latest
+    container: ghcr.io/inti-cmnb/kicad_auto:ki9
+    if: "!contains(github.event.head_commit.message, 'Update Outputs')"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run ERC
+        run: |
+          kicad-cli sch erc \
+            --output erc_report.rpt \
+            --exit-code-violations \
+            design/pcb/kicad/Swasthik_KiBot_Project.kicad_sch || true
+
+      - name: Check ERC for errors
+        run: |
+          if [ ! -f erc_report.rpt ]; then
+            echo "::error::ERC report was not generated"; exit 1
+          fi
+          ERRORS=$(grep -oP 'Errors\s+\K[0-9]+' erc_report.rpt | head -1)
+          echo "ERC errors: ${ERRORS:-unknown}"
+          if [ "${ERRORS:-0}" -gt 0 ]; then
+            echo "::error::ERC found $ERRORS error(s)"; exit 1
+          fi
+          echo "ERC passed."
+
+      - name: Run DRC
+        run: |
+          kicad-cli pcb drc \
+            --output drc_report.rpt \
+            --exit-code-violations \
+            design/pcb/kicad/Swasthik_KiBot_Project.kicad_pcb || true
+
+      - name: Check DRC for errors
+        run: |
+          if [ ! -f drc_report.rpt ]; then
+            echo "::error::DRC report was not generated"; exit 1
+          fi
+          UNCONNECTED=$(grep -oP 'Found\s+\K[0-9]+(?=\s+unconnected)' drc_report.rpt | head -1)
+          FP_ERRORS=$(grep -oP 'Found\s+\K[0-9]+(?=\s+Footprint errors)' drc_report.rpt | head -1)
+          ERROR_COUNT=$(grep -c '; error' drc_report.rpt || true)
+          echo "Unconnected pads: ${UNCONNECTED:-0}, Footprint errors: ${FP_ERRORS:-0}, Error violations: $ERROR_COUNT"
+          FAIL=0
+          [ "${UNCONNECTED:-0}" -gt 0 ] && FAIL=1
+          [ "${FP_ERRORS:-0}" -gt 0 ] && FAIL=1
+          [ "$ERROR_COUNT" -gt 0 ] && FAIL=1
+          if [ "$FAIL" -gt 0 ]; then
+            echo "::error::DRC has blocking errors"; exit 1
+          fi
+          echo "DRC passed."
+
+      - name: Export BOM
+        run: |
+          kicad-cli sch export bom \
+            --output bom_check.csv \
+            design/pcb/kicad/Swasthik_KiBot_Project.kicad_sch
+          if [ ! -s bom_check.csv ]; then
+            echo "::error::BOM export failed"; exit 1
+          fi
+          echo "BOM exported: $(wc -l < bom_check.csv) lines"
+
   release:
     needs: generate_outputs
     runs-on: ubuntu-latest
@@ -66,8 +124,12 @@ jobs:
             design/pcb/outputs/Testing/Testpoints/*.csv
 
   generate_outputs:
+    needs: pcb-gate
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, 'Merge pull request') || github.ref_type == 'tag'"
+    if: |
+      always() &&
+      (needs.pcb-gate.result == 'success' || needs.pcb-gate.result == 'skipped') &&
+      (!contains(github.event.head_commit.message, 'Merge pull request') || github.ref_type == 'tag')
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -222,7 +284,6 @@ jobs:
           cache3D: YES
 
       - name: Pull latest changes
-        if: github.event_name == 'push'
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "GitHub Actions"
@@ -247,7 +308,7 @@ jobs:
           fi
 
       - name: Run netlist validation
-        if: ${{ github.event_name == 'push' && env.kibot_variant != 'DRAFT' }}
+        if: ${{ env.kibot_variant != 'DRAFT' }}
         run: |
           python3 kibot_resources/scripts/validate_netlist.py \
             -n design/pcb/outputs/*-netlist.net \
@@ -255,7 +316,6 @@ jobs:
         continue-on-error: true
 
       - name: Discard changes to .kicad_pcb files and remove temp files
-        if: github.event_name == 'push'
         run: |
           git checkout HEAD -- $(git ls-files "*.kicad_pcb") 2>/dev/null || true
           git clean -f "*.kicad_pcb" 2>/dev/null || true
@@ -264,7 +324,6 @@ jobs:
           git clean -f "*.kicad_prl" 2>/dev/null || true
 
       - name: Update Outputs
-        if: github.event_name == 'push'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           branch: ${{ github.ref_name }}

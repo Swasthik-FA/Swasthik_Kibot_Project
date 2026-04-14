@@ -124,36 +124,43 @@ Severity: Critical = blocks gate. Major = fix or waive in writing. Minor = log a
 
 Two workflow files in `.github/workflows/`:
 
-### `pcb-checks.yaml` — Blocking gate (SOP Section 10)
+### `pcb-checks.yaml` — PR gate (SOP Section 10)
 
-Runs on every push to `dev`, `qa`, `main` and on every PR targeting these branches. Uses `kicad-cli` in the `ghcr.io/inti-cmnb/kicad_auto:ki9` container. Three blocking checks:
+Runs on every PR targeting `dev`, `qa`, or `main` and on pushes to those branches. Uses `kicad-cli` in the `ghcr.io/inti-cmnb/kicad_auto:ki9` container. Three blocking checks:
 
-1. **ERC** — `kicad-cli sch erc --exit-code-violations`. Fails on errors, warnings are reported but don't block.
-2. **DRC** — `kicad-cli pcb drc --exit-code-violations`. Fails on errors, unconnected pads, or footprint errors. Warnings don't block.
-3. **BOM export** — `kicad-cli sch export bom`. Must produce a non-empty CSV.
+1. **ERC** — Fails on errors. Warnings reported but don't block.
+2. **DRC** — Fails on errors, unconnected pads, or footprint errors. Warnings don't block.
+3. **BOM export** — Must produce a non-empty CSV.
 
-Reports are uploaded as the `pcb-ci-reports` artifact. Skips auto-commit pushes (message contains "Update Outputs").
+This is the required status check for branch protection on all three branches.
 
-### `ci.yaml` — KiBot output generation and release
+### `ci.yaml` — Output generation and release (dev + tags only)
 
-Runs on push to `dev`, `qa`, `main` and on tags matching `hw-v*`. Also triggers on PRs (but auto-commit and output steps only run on push events).
+Triggers on push to `dev` and on tags matching `hw-v*`. Does NOT run on `qa` or `main` pushes, and does NOT run on PRs.
+
+Job pipeline: `pcb-gate` → `generate_outputs` → `release`
+
+1. **`pcb-gate`** — Same ERC/DRC/BOM checks as pcb-checks.yaml. Must pass before outputs are generated.
+2. **`generate_outputs`** — KiBot output generation (Gerbers, BOM, PDFs, 3D renders). Auto-commits outputs back to `dev`.
+3. **`release`** — Only on tag push. Updates CHANGELOG.md, creates GitHub release with fab artifacts.
 
 Key env vars:
 - `kibot_config`: `kibot_yaml/kibot_main.yaml`
 - `kibot_schema`: `design/pcb/kicad/Swasthik_KiBot_Project.kicad_sch`
 - `kibot_board`: `design/pcb/kicad/Swasthik_KiBot_Project.kicad_pcb`
-- `kibot_variant`: `DRAFT`, `PRELIMINARY`, `CHECKED`, or `RELEASED`
-- `kicad_version`: `8` or `9` (currently `9`)
-
-Variant behavior:
-- **DRAFT** — Schematic PDF, netlist, BoM only. Skips ERC/DRC.
-- **PRELIMINARY** — Schematic + PCB docs. Skips ERC/DRC.
-- **CHECKED** — Full output with ERC/DRC.
-- **RELEASED** — Auto-selected on tag push. Same as CHECKED.
+- `kibot_variant`: `CHECKED` (default) or `RELEASED` (auto on tag)
+- `kicad_version`: `9`
 
 Tag format: `hw-vX.Y.Z-rev<L>` (e.g., `hw-v1.0.0-revA`). See SOP Section 5.
 
-CI skips runs on merge-commit pushes (unless tag). On tag push, it auto-updates CHANGELOG.md and creates a GitHub release. Auto-commits only happen on push events, not on PRs.
+### CI flow summary
+
+| Event | `pcb-checks.yaml` | `ci.yaml` |
+|-------|-------------------|-----------|
+| PR to `dev`/`qa`/`main` | Runs (blocking gate) | Does not run |
+| Push to `dev` | Runs | `pcb-gate` → `generate_outputs` |
+| Push to `qa`/`main` | Runs | Does not run |
+| Tag push (`hw-v*`) | Runs | `pcb-gate` → `generate_outputs` → `release` |
 
 ### Branch protection rules (configure in GitHub UI)
 
