@@ -24,5 +24,8 @@ kibot_*.kicad_prl
 kibot_*.kicad_pro
 kibot_run*.log
 
+# Pre-push hook temp reports
+.pre-push-checks/
+
 # Claude Code local settings
 .claude/
