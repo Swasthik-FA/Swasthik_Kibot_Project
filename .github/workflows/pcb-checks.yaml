@@ -1,0 +1,139 @@
+name: PCB CI Gate
+
+# SOP-HW-002 Section 10: Blocking checks on every push and PR.
+# ERC must find zero errors. DRC must find zero errors. BOM export must succeed.
+# Warnings are reported but do not block the build.
+
+on:
+  push:
+    branches: [dev, qa, main]
+    paths-ignore:
+      - '*.md'
+  pull_request:
+    branches: [dev, qa, main]
+
+env:
+  KICAD_SCH: design/pcb/kicad/Swasthik_KiBot_Project.kicad_sch
+  KICAD_PCB: design/pcb/kicad/Swasthik_KiBot_Project.kicad_pcb
+  REPORT_DIR: design/pcb/reports
+
+jobs:
+  pcb-checks:
+    runs-on: ubuntu-latest
+    container: ghcr.io/inti-cmnb/kicad_auto:ki9
+    if: "!contains(github.event.head_commit.message, 'Update Outputs')"
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Create report directory
+        run: mkdir -p ${{ env.REPORT_DIR }}
+
+      # --- ERC ---
+      - name: Run ERC
+        id: erc
+        run: |
+          kicad-cli sch erc \
+            --output ${{ env.REPORT_DIR }}/ci_erc_report.rpt \
+            --exit-code-violations \
+            ${{ env.KICAD_SCH }} || true
+
+      - name: Check ERC for errors
+        run: |
+          REPORT="${{ env.REPORT_DIR }}/ci_erc_report.rpt"
+          if [ ! -f "$REPORT" ]; then
+            echo "::error::ERC report was not generated"
+            exit 1
+          fi
+          # Extract error count from the summary line: "Errors N"
+          ERRORS=$(grep -oP 'Errors\s+\K[0-9]+' "$REPORT" | head -1)
+          if [ -z "$ERRORS" ]; then
+            echo "::warning::Could not parse error count from ERC report"
+            exit 0
+          fi
+          echo "ERC errors: $ERRORS"
+          if [ "$ERRORS" -gt 0 ]; then
+            echo "::error::ERC found $ERRORS error(s). Fix all errors before merging."
+            exit 1
+          fi
+          WARNINGS=$(grep -oP 'Warnings\s+\K[0-9]+' "$REPORT" | head -1)
+          echo "ERC warnings: ${WARNINGS:-0}"
+          echo "ERC passed (0 errors)."
+
+      # --- DRC ---
+      - name: Run DRC
+        id: drc
+        run: |
+          kicad-cli pcb drc \
+            --output ${{ env.REPORT_DIR }}/ci_drc_report.rpt \
+            --exit-code-violations \
+            ${{ env.KICAD_PCB }} || true
+
+      - name: Check DRC for errors
+        run: |
+          REPORT="${{ env.REPORT_DIR }}/ci_drc_report.rpt"
+          if [ ! -f "$REPORT" ]; then
+            echo "::error::DRC report was not generated"
+            exit 1
+          fi
+          # Check for unconnected pads (always an error)
+          UNCONNECTED=$(grep -oP 'Found\s+\K[0-9]+(?=\s+unconnected)' "$REPORT" | head -1)
+          # Check for footprint errors
+          FP_ERRORS=$(grep -oP 'Found\s+\K[0-9]+(?=\s+Footprint errors)' "$REPORT" | head -1)
+          # Count DRC violations
+          VIOLATIONS=$(grep -oP 'Found\s+\K[0-9]+(?=\s+DRC violations)' "$REPORT" | head -1)
+
+          echo "DRC violations: ${VIOLATIONS:-0}"
+          echo "Unconnected pads: ${UNCONNECTED:-0}"
+          echo "Footprint errors: ${FP_ERRORS:-0}"
+
+          FAIL=0
+          if [ "${UNCONNECTED:-0}" -gt 0 ]; then
+            echo "::error::DRC found $UNCONNECTED unconnected pad(s)."
+            FAIL=1
+          fi
+          if [ "${FP_ERRORS:-0}" -gt 0 ]; then
+            echo "::error::DRC found $FP_ERRORS footprint error(s)."
+            FAIL=1
+          fi
+
+          # Check for error-severity violations (not just warnings)
+          ERROR_COUNT=$(grep -c '; error' "$REPORT" || true)
+          if [ "$ERROR_COUNT" -gt 0 ]; then
+            echo "::error::DRC found $ERROR_COUNT error-severity violation(s)."
+            FAIL=1
+          fi
+
+          if [ "$FAIL" -gt 0 ]; then
+            exit 1
+          fi
+          echo "DRC passed (0 errors, 0 unconnected pads)."
+
+      # --- BOM Export ---
+      - name: Export BOM
+        run: |
+          kicad-cli sch export bom \
+            --output ${{ env.REPORT_DIR }}/ci_bom.csv \
+            ${{ env.KICAD_SCH }}
+
+      - name: Verify BOM generated
+        run: |
+          BOM="${{ env.REPORT_DIR }}/ci_bom.csv"
+          if [ ! -f "$BOM" ]; then
+            echo "::error::BOM export failed — file not generated"
+            exit 1
+          fi
+          LINES=$(wc -l < "$BOM")
+          echo "BOM exported: $LINES lines"
+
+      # --- Upload artifacts ---
+      - name: Archive CI reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pcb-ci-reports
+          path: |
+            ${{ env.REPORT_DIR }}/ci_erc_report.rpt
+            ${{ env.REPORT_DIR }}/ci_drc_report.rpt
+            ${{ env.REPORT_DIR }}/ci_bom.csv
