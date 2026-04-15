@@ -9,7 +9,7 @@
 |---|---|
 | **Project name** | Swasthik KiBot Project |
 | **Project code** | Swasthik_KiBot_Project |
-| **Client** | <!-- Client company name --> |
+| **Client** | <!-- sssssss --> |
 | **Client technical contact** | <!-- Name, email, phone --> |
 | **Client business contact** | <!-- Name, email, phone --> |
 | **SOW reference** | <!-- SOW-YYYY-NNN --> |
