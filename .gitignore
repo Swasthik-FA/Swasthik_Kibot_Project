@@ -30,9 +30,14 @@ kibot_run*.log
 # License
 LICENSE
 
-# Markdown files (except README.md)
+# Markdown files (except tracked project docs)
 *.md
 !README.md
+!CLAUDE.md
+!CHANGELOG.md
+!FAQ.md
+!project_config.md
+!Fastbit_PCB_Design_Mini_SOP_v1.0.md
 
 # Claude Code local settings
 .claude/

@@ -1,0 +1,79 @@
+# Fastbit PCB — Pre-commit hooks
+#
+# Runs light checks locally before allowing a commit / push.
+# Catches the most common mistakes without slowing the engineer down.
+#
+# Install:
+#   pip install pre-commit
+#   pre-commit install
+#
+# Bypass (use sparingly for work-in-progress commits):
+#   git commit --no-verify
+#
+# CI still catches anything bypassed locally, so --no-verify is a shortcut
+# not an escape hatch.
+#
+# Per SOP-HW-001 §7.7 (PCB CI gate — local enforcement layer).
+
+repos:
+  - repo: local
+    hooks:
+      # ------------------------------------------------------------------
+      # Run ERC before committing any schematic change
+      # ------------------------------------------------------------------
+      - id: kicad-erc
+        name: KiCad ERC
+        description: Run Electrical Rules Check on schematic changes
+        entry: bash scripts/run_erc.sh
+        language: system
+        files: \.(kicad_sch|kicad_pro)$
+        pass_filenames: false
+        stages: [pre-commit]
+
+      # ------------------------------------------------------------------
+      # Run DRC before committing any layout change
+      # Uses --allow-warnings because routing-in-progress commits are
+      # common; CI still enforces clean DRC at the routing/pre-fab/release
+      # stages.
+      # ------------------------------------------------------------------
+      - id: kicad-drc
+        name: KiCad DRC (warnings allowed)
+        description: Run Design Rules Check on layout changes (errors fatal)
+        entry: bash scripts/run_drc.sh design/pcb/kicad/Swasthik_KiBot_Project.kicad_pcb --allow-warnings
+        language: system
+        files: \.(kicad_pcb|kicad_pro)$
+        pass_filenames: false
+        stages: [pre-commit]
+
+      # ------------------------------------------------------------------
+      # On push, verify the review pack exists if any design file changed
+      # ------------------------------------------------------------------
+      - id: review-pack-exists
+        name: Review pack exists
+        description: Check that design/pcb/outputs/review_pack/ exists before push
+        entry: bash -c 'if ! ls design/pcb/outputs/review_pack/*.pdf 2>/dev/null >/dev/null; then echo "WARN: No review pack found. Consider running scripts/export_review_pack.sh before opening a PR."; fi; exit 0'
+        language: system
+        files: \.(kicad_sch|kicad_pcb|kicad_pro)$
+        pass_filenames: false
+        stages: [pre-push]
+
+      # ------------------------------------------------------------------
+      # Prevent committing intermediate KiCad backup and lock files
+      # ------------------------------------------------------------------
+      - id: no-kicad-backup-files
+        name: No KiCad backup files
+        description: Prevent committing .bak, -backups/, .lck, and ~ files
+        entry: bash -c 'MATCHES=$(git diff --cached --name-only | grep -E "(\.bak$|\.lck$|-backups/|~$)" || true); if [ -n "$MATCHES" ]; then echo "ERROR: KiCad backup/lock files should not be committed:"; echo "$MATCHES"; exit 1; fi'
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+
+  # ---------------------------------------------------------------------
+  # Generic markdown linting for checklists and release docs
+  # ---------------------------------------------------------------------
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.39.0
+    hooks:
+      - id: markdownlint
+        args: [--disable, MD013, MD033, MD041, --]
+        files: \.(md)$

@@ -10,7 +10,7 @@ Only two subdirectories are created by the template:
 
 | Folder | Why it's pre-created |
 |---|---|
-| `kicad/` | KiCad project files go here. The shell scripts default to `design/pcb/kicad/project.kicad_pro` and related paths. |
+| `kicad/` | KiCad project files go here. The shell scripts default to `design/pcb/kicad/Swasthik_KiBot_Project.kicad_pro` and related paths. |
 | `outputs/` | Scripts write generated reports (ERC, DRC, BOM, schematic PDF) here. CI reads from here. |
 | `reviews/` | Completed gate checklists land here as the project progresses through the 5 quality gates. |
 
